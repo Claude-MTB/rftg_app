@@ -41,6 +41,9 @@
                 <div class="card-body">
                     <h5 class="card-title">Total des Films</h5>
                     <h2>{{ $totalFilms }}</h2>
+
+                    <p>Aucun film trouvé.</p>
+
                 </div>
             </div>
         </div>
