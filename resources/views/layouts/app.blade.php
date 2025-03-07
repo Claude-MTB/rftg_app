@@ -12,8 +12,8 @@
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script defer src=""></script>
-</head>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
 <body class="font-sans antialiased">
     <div class="min-h-screen bg-gray-50">
         @include('layouts.navigation')

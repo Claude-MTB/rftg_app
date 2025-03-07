@@ -8,7 +8,6 @@
             <div class="mt-4 flex flex-wrap gap-4 items-center justify-between">
                 <!-- Search Bar -->
                 <div class="relative">
-                <br/>
                     <input
                         type="text"
                         placeholder="Rechercher un film..."
@@ -17,11 +16,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <br/>
-                    <br/>
-
                 </div>
-                <br/>
 
                 <!-- View Mode Buttons -->
                 <div class="flex items-center gap-2">
@@ -32,7 +27,7 @@
                     </button>
                     <button onclick="setViewMode('list')" class="p-2 rounded-lg view-mode-btn" data-mode="list">
                         <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" sxtroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         </svg>
                     </button>
                 </div>
@@ -41,38 +36,34 @@
 
         <!-- Movies Display -->
         <div id="movies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($totalFilms as $film)
+            @foreach($films as $film)
             <div class="bg-white rounded-lg shadow-sm overflow-hidden">
                 <div class="aspect-video bg-gray-100 flex items-center justify-center">
                     🎬 <!-- Icône temporaire si aucune image dispo -->
                 </div>
                 <div class="p-4">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ $film['title'] }}</h3>
-                    <p class="text-sm text-gray-600">{{ $film['description'] ?? 'Aucune description disponible' }}</p>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ $film->title }}</h3>
+                    <p class="text-sm text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
                     <div class="mt-2 flex items-center gap-2">
                         <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">
-                        <label>Classification: <label>
-                            {{ $film['rating'] ?? 'N/A' }}
+                            <label>Classification:</label> {{ $film->rating ?? 'N/A' }}
                         </span>
-                        <span class="text-gray-600">{{ $film['release_year'] }}</span>
+                        <span class="text-gray-600">{{ $film->release_year }}</span>
                     </div>
-                    <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film['length'] ?? 'Inconnue' }} min</p>
-                    <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film['language_id'] }}</p>
+                    <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length ?? 'Inconnue' }} min</p>
+                    <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id }}</p>
 
-                            <!-- Boutons Détails et Modifier -->
-        <div class="mt-4 flex gap-4">
-            <!-- Détails Button -->
-            <a href="{{ route('films.show', $film->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                Détails 
-            </a>
-
-            <!-- Modifier Button -->
-            <a href="{{ route('films.edit', $film->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                Modifier
-            </a>
-        </div>
-    </div>
-</div>
+                    <!-- Boutons -->
+                    <div class="mt-4 flex gap-4">
+                        @if(!empty($film->id))
+                            <a href="{{ route('films.show', $film->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                                Détails
+                            </a>
+                            <a href="{{ route('films.edit', $film->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                                Modifier
+                            </a>
+                        @endif
+                    </div>
                 </div>
             </div>
             @endforeach
@@ -119,13 +110,11 @@ function setViewMode(mode) {
 @endsection
 
 <style>
-/* Styles de base */
 body {
     font-family: 'Inter', sans-serif;
     background-color: #f9fafb;
 }
 
-/* Recherche - Barre de recherche */
 input[type="text"] {
     font-size: 1rem;
     width: 100%;
@@ -141,30 +130,25 @@ input[type="text"]:focus {
     box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.2);
 }
 
-/* Icône recherche */
 input[type="text"] + svg {
     position: absolute;
     top: 50%;
     left: 1rem;
     transform: translateY(-50%);
-    height: 1.25rem; /* Taille réduite */
-    width: 1.25rem;  /* Taille réduite */
+    height: 1.25rem;
+    width: 1.25rem;
 }
 
-/* Taille réduite pour l'icône SVG */
 .view-mode-btn svg {
-    height: 1rem;  /* 16px */
-    width: 1rem;   /* 16px */
+    height: 1rem;
+    width: 1rem;
 }
 
-
-/* Conteneur de films */
 #movies-container {
     display: grid;
     gap: 1.5rem;
 }
 
-/* Cartes de films */
 #movies-container .bg-white {
     border-radius: 0.5rem;
     overflow: hidden;

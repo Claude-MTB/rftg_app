@@ -5,26 +5,29 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ route('dashboard') }}" class="flex items-center">
+                    <!-- Logo de taille normale -->
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 4v16M17 4v16M3 8h4m10 0h4M3 12h18M3 16h4m10 0h4M4 20h16a1 1 0 001-1V5a1 1 0 00-1-1H4a1 1 0 00-1 1v14a1 1 0 001 1z" />
                     </svg>
-                    <span class="ml-2 text-xl font-semibold whitespace-nowrap">RFTG - Location de DVD</span>
+                    <span class="ml-2 text-lg font-semibold text-gray-900">RFTG - Location de DVD</span>
                 </a>
             </div>
 
             <!-- Navigation pour les écrans de bureau -->
             <div class="hidden md:flex items-center space-x-8">
-                <a href="{{ route('dashboard') }}" class="text-gray-900 hover:text-indigo-600">Accueil</a>
-                <a href="{{ route('films.index') }}" class="text-gray-900 hover:text-indigo-600">Films</a>
+                <a href="{{ route('dashboard') }}" class="text-gray-700 hover:text-indigo-600 font-medium">Accueil</a>
+                <a href="{{ route('films.index') }}" class="text-gray-700 hover:text-indigo-600 font-medium">Films</a>
 
-                <!-- Menu du profil avec bouton -->
+                <!-- Menu utilisateur simple -->
                 <div class="flex items-center space-x-2">
-                    <span class="text-gray-900">{{ Auth::user()->name }}</span>
-                    <button class="flex items-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-                        </svg>
-                    </button>
+                    <span class="text-gray-700">{{ Auth::user()->name }}</span>
+                    <form method="POST" action="{{ route('logout') }}">
+                        <button type="submit" class="text-gray-700 hover:text-indigo-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                            </svg>
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -44,16 +47,13 @@
     <!-- Menu mobile -->
     <div x-show="open" class="md:hidden" style="display: none;">
         <div class="px-2 pt-2 pb-3 space-y-1">
-            <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-gray-900 hover:bg-gray-50">Accueil</a>
-            <a href="{{ route('films.index') }}" class="block px-3 py-2 text-gray-900 hover:bg-gray-50">Films</a>
-            <div class="px-3 py-2 flex items-center justify-between">
-                <span class="text-gray-900">{{ Auth::user()->name }}</span>
-                <form method="POST" action="{{ route('logout') }} ">
-                    @csrf
-                    <button type="submit">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-                        </svg>
+            <a href="{{ route('dashboard') }}" class="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">Accueil</a>
+            <a href="{{ route('films.index') }}" class="block px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">Films</a>
+            <div class="border-t border-gray-200 mt-2 pt-2">
+                <span class="block px-3 py-2 text-gray-700 font-medium">{{ Auth::user()->name }}</span>
+                <form method="POST" action="{{ route('logout') }}">
+                    <button type="submit" class="block w-full text-left px-3 py-2 text-gray-700 hover:bg-gray-50 rounded-md">
+                        Déconnexion
                     </button>
                 </form>
             </div>
@@ -78,13 +78,11 @@ nav {
 .navbar-logo {
     display: flex;
     align-items: center;
-    height: 1.25rem;
-    width: 1.25rem;  
 }
 
 .navbar-logo svg {
-    height: 1.25rem; 
-    width: 1.25rem;  
+    height: 2rem;  /* Taille normale pour le logo */
+    width: 2rem;   /* Taille normale pour le logo */
     color: #4F46E5;
 }
 
@@ -94,6 +92,7 @@ nav {
     font-weight: 600;
     color: #1F2937;
 }
+
 .navbar-links {
     display: flex;
     gap: 2rem;
@@ -179,12 +178,12 @@ nav {
     margin-top: 1rem;
 }
 
-.text-gray-900 {
-    color: #1F2937;
+.text-gray-700 {
+    color: #4B5563;
 }
 
-.text-gray-600 {
-    color: #4B5563;
+.text-gray-900 {
+    color: #1F2937;
 }
 
 .bg-indigo-600 {
