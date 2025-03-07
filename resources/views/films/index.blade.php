@@ -11,14 +11,15 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($films as $film)
-            <tr>
-                <td>{{ $film->titre }}</td>
-                <td>
-                    <a href="{{ route('films.show', $film->id) }}" class="btn btn-info">Détails</a>
-                </td>
-            </tr>
-            @endforeach
+        @foreach($films as $film)
+        <tr>
+            <td>{{ $film->titre }}</td>
+            <td>
+                <!-- Lien vers la page de détail -->
+                <a href="{{ route('films.show', $film->id) }}" class="btn btn-info">Détails</a>
+            </td>
+        </tr>
+        @endforeach
         </tbody>
     </table>
 </div>

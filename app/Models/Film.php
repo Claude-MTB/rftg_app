@@ -9,10 +9,10 @@ class Film extends Model
 {
     use HasFactory;
 
-    protected $table = 'film'; // Spécifiez explicitement le nom de la table
+    protected $table = 'film';
 
     protected $fillable = [
-        'titre', 'date_sortie', 'description' // Ajoutez les champs à remplir
+        'titre', 'date_sortie', 'description'
     ];
 
     protected $dates = ['date_sortie'];

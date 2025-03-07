@@ -1,41 +1,19 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ $film['title'] }}</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 20px; }
-        h1 { color: #333; }
-        .container { max-width: 600px; margin: auto; }
-        .back-link { display: inline-block; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <a href="{{ url('/films') }}" class="back-link">⬅ Retour à la liste des films</a>
-        <h1>{{ $film['title'] }}</h1>
-        <p><strong>Description :</strong> {{ $film['description'] ?? 'Pas de description disponible' }}</p>
-        <p><strong>Date de sortie :</strong> {{ $film['release_date'] ?? 'Inconnue' }}</p>
-        <p><strong>Réalisateur :</strong> {{ $film['director'] ?? 'Non spécifié' }}</p>
-    </div>
-    <h1>{{ $film->titre }}</h1>
-    <p><strong>Description :</strong> {{ $film->description }}</p>
-    <p><strong>Réalisateur :</strong> {{ $film->realisateur }}</p>
-    <p><strong>Année :</strong> {{ $film->annee }}</p>
-<a href="{{ route('films.index') }}">Retour à la liste</a>
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <h2>Détails du Film</h2>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">{{ $film->titre }}</h5>
-            <p>Date de sortie : {{ $film->date_sortie }}</p>
-        </div>
+<div class="container mx-auto p-4">
+    <div class="bg-white p-6 rounded-lg shadow-sm">
+        <h2 class="text-2xl font-bold text-gray-900">{{ $film->title }}</h2>
+        <p class="mt-2 text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
+        <p class="mt-2 text-gray-600"><strong>Année de sortie :</strong> {{ $film->release_year }}</p>
+        <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length }} min</p>
+        <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id }}</p>
+        <p class="mt-2 text-gray-600"><strong>Classification :</strong> {{ $film->rating ?? 'N/A' }}</p>
+
+        <!-- Ajouter un bouton pour revenir à la liste -->
+        <a href="{{ route('films.index') }}" class="mt-4 inline-block px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
+            Retour à la liste
+        </a>
     </div>
 </div>
 @endsection
-</body>
-</html>
