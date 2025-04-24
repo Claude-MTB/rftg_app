@@ -16,9 +16,7 @@
             <a href="{{ route('films.show', $film->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
                 Détails
             </a>
-            <a href="{{ route('films.edit', $film->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                Modifier
-            </a>
+            <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">{{__('Test')}}
             <form action="{{ route('films.destroy', $film->id) }}" method="POST" onsubmit="return confirm('Voulez-vous vraiment supprimer ce film ?');">
                 @csrf
                 @method('DELETE')

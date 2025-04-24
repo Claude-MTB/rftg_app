@@ -14,9 +14,6 @@
                         placeholder="Rechercher un film..."
                         class="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
                     />
-                    <svg xmlns="http://www.w3.org/2000/svg" class="absolute left-3 top-2.5 h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                    </svg>
                 </div>
 
                 <!-- View Mode Buttons -->
@@ -37,84 +34,20 @@
 
         <!-- Movies Display -->
         <div id="movies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @if(!empty($films) && is_iterable($films))
                 @foreach($films as $film)
-                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                        <div class="aspect-video bg-gray-100 flex items-center justify-center">
-                            @if(!empty($film->image))
-                                <img src="{{ $film->image }}" alt="Affiche du film {{ $film->title ?? 'Titre inconnu' }}" class="w-full h-full object-cover">
-                            @else
-                                🎬
-                            @endif
-                        </div>
-                        <div class="p-4">
-                            <h3 class="text-lg font-semibold text-gray-900">{{ $film->title ?? 'Titre inconnu' }}</h3>
-                            <p class="text-sm text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
-                            <div class="mt-2 flex items-center gap-2">
-                                <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">
-                                    <label>Classification:</label> {{ $film->rating ?? 'N/A' }}
-                                </span>
-                                <span class="text-gray-600">{{ $film->release_year ?? 'Année inconnue' }}</span>
-                            </div>
-                            <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length ?? 'Inconnue' }} min</p>
-                            <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id ?? 'Non spécifié' }}</p>
-
-                            <!-- Genres -->
-                            <div class="mt-2 text-sm text-gray-600">
-                                <strong>Genres :</strong>
-                                @if(!empty($film->genres) && is_iterable($film->genres))
-                                    @foreach($film->genres as $genre)
-                                        <span class="bg-gray-200 px-2 py-1 rounded-full text-gray-700">{{ $genre->name }}</span>
-                                    @endforeach
-                                @else
-                                    <span class="text-gray-400">Aucun genre</span>
-                                @endif
-                            </div>
-
-                            <!-- Boutons -->
-                            <div class="mt-4 flex gap-4">
-                                @php
-                                    $hasId = !empty($film->id);
-                                    $detailsLink = $hasId ? route('films.show', $film->id) : '#';
-                                    $editLink = $hasId ? route('films.edit', $film->id) : '#';
-                                @endphp
-
-                                <a href="{{ $detailsLink }}"
-                                   @if(!$hasId) onclick="alert('ID du film manquant.'); event.preventDefault();" @endif
-                                   class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition">
-                                    Détails
-                                </a>
-
-                                <a href="{{ $editLink }}"
-                                   @if(!$hasId) onclick="alert('ID du film manquant.'); event.preventDefault();" @endif
-                                   class="px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:bg-yellow-600 transition">
-                                    Modifier
-                                </a>
-
-                                @if($hasId)
-                                    <form action="{{ route('films.destroy', $film->id) }}" method="POST" onsubmit="return confirm('Es-tu sûr de vouloir supprimer ce film ?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition">
-                                            Supprimer
-                                        </button>
-                                    </form>
-                                @endif
-                            </div>
-                        </div>
-                    </div>
+                <div class="p-4 mb-4 border rounded-lg shadow">
+                    <h4 class="text-xl font-bold">{{ $film['filmId'] }}</h4>
+                    <h3 class="text-lg font-semibold text-gray-900">{{ $film['title'] }}</h3>
+                    <p class="text-sm text-gray-600">{{ $film['description'] }}</p>
+                    <p class="text-gray-600"><strong>Date de sortie :</strong> {{ $film['releaseYear'] }}</span>
+                    <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film['length'] }} minutes</p>
+                    <p class="mt-2 text-gray-600"><strong>Thème :</strong> {{ $film['specialFeatures'] }}</p>
+                </div>
+                @method('DELETE')
+                <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
+                    Supprimer
+                </button>
                 @endforeach
-            @else
-                <p>Aucun film trouvé.</p>
-            @endif
-        </div>
-
-        <!-- Statistics -->
-        <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h3 class="text-sm font-medium text-gray-500">Total des Films</h3>
-                <p class="mt-2 text-3xl font-semibold text-gray-900">{{ $films ? count($films) : 0 }}</p>
-            </div>
         </div>
     </main>
 </div>
