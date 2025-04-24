@@ -19,7 +19,7 @@ class DashboardController extends Controller
         $ratingStats = $films->groupBy('rating')->map->count();
     
         // Retourner la vue avec les données
-        return view('dashboard', compact('films', 'totalFilms', 'ratingStats'));
+        return view('dashboard', compact('films', 'totalFilms'));
     }
     
 }

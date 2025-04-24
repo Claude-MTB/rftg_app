@@ -1,35 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container mx-auto p-4">
-    <div class="bg-white p-6 rounded-lg shadow-sm">
-        <h2 class="text-2xl font-bold text-gray-900">Modifier le film : {{ $film->title }}</h2>
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Modifier le film</h2>
+    <form action="{{ route('films.update', $film->id) }}" method="POST">
+        @csrf
+        @method('PUT')
+        <label class="block">Titre :</label>
+        <input type="text" name="title" value="{{ $film->title }}" required class="border p-2 w-full">
 
-        <!-- Formulaire de modification -->
-        <form action="{{ route('films.update', $film->id) }}" method="POST">
-            @csrf
-            @method('PUT')
-            <div class="mt-4">
-                <label for="title" class="block text-sm font-medium text-gray-700">Titre</label>
-                <input type="text" name="title" id="title" value="{{ old('title', $film->title) }}" class="mt-2 p-2 w-full border border-gray-300 rounded-md" required>
-            </div>
+        <label class="block mt-2">Description :</label>
+        <textarea name="description" class="border p-2 w-full">{{ $film->description }}</textarea>
 
-            <div class="mt-4">
-                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
-                <textarea name="description" id="description" class="mt-2 p-2 w-full border border-gray-300 rounded-md">{{ old('description', $film->description) }}</textarea>
-            </div>
+        <label class="block mt-2">Année de sortie :</label>
+        <input type="number" name="release_year" value="{{ $film->release_year }}" required class="border p-2 w-full">
 
-            <div class="mt-4">
-                <button type="submit" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                    Enregistrer les modifications
-                </button>
-            </div>
-        </form>
+        <label class="block mt-2">Durée (minutes) :</label>
+        <input type="number" name="length" value="{{ $film->length }}" class="border p-2 w-full">
 
-        <!-- Ajouter un bouton pour revenir à la liste -->
-        <a href="{{ route('films.index') }}" class="mt-4 inline-block px-4 py-2 bg-gray-500 text-white rounded-lg hover:bg-gray-600">
-            Annuler
-        </a>
-    </div>
+        <label class="block mt-2">Langue :</label>
+        <input type="text" name="language_id" value="{{ $film->language_id }}" required class="border p-2 w-full">
+
+        <button type="submit" class="mt-4 bg-yellow-500 text-white px-4 py-2 rounded">
+            Modifier
+        </button>
+    </form>
 </div>
 @endsection

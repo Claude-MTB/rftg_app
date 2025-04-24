@@ -36,38 +36,55 @@
 
         <!-- Movies Display -->
         <div id="movies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            @foreach($films as $film)
-            <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-                <div class="aspect-video bg-gray-100 flex items-center justify-center">
+    @if($films && $films->isNotEmpty())
+        @foreach($films as $film)
+        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+            <div class="aspect-video bg-gray-100 flex items-center justify-center">
+                @if($film->image) <!-- Vérifie si l'image existe -->
+                    <img src="{{ $film->image }}" alt="Affiche du film {{ $film->title }}" class="w-full h-full object-cover">
+                @else
                     🎬 <!-- Icône temporaire si aucune image dispo -->
+                @endif
+            </div>
+            <div class="p-4">
+                <h3 class="text-lg font-semibold text-gray-900">{{ $film->title }}</h3>
+                <p class="text-sm text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
+                <div class="mt-2 flex items-center gap-2">
+                    <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">
+                        <label>Classification:</label> {{ $film->rating ?? 'N/A' }}
+                    </span>
+                    <span class="text-gray-600">{{ $film->release_year }}</span>
                 </div>
-                <div class="p-4">
-                    <h3 class="text-lg font-semibold text-gray-900">{{ $film->title }}</h3>
-                    <p class="text-sm text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
-                    <div class="mt-2 flex items-center gap-2">
-                        <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">
-                            <label>Classification:</label> {{ $film->rating ?? 'N/A' }}
-                        </span>
-                        <span class="text-gray-600">{{ $film->release_year }}</span>
-                    </div>
-                    <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length ?? 'Inconnue' }} min</p>
-                    <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id }}</p>
+                <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length ?? 'Inconnue' }} min</p>
+                <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id ?? 'Non spécifié' }}</p>
 
-                    <!-- Boutons -->
-                    <div class="mt-4 flex gap-4">
-                        @if(!empty($film->id))
-                            <a href="{{ route('films.show', $film->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                                Détails
-                            </a>
-                            <a href="{{ route('films.edit', $film->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                                Modifier
-                            </a>
-                        @endif
-                    </div>
+                <!-- Genres -->
+                <div class="mt-2 text-sm text-gray-600">
+                    <strong>Genres :</strong>
+                    @foreach($film->genres as $genre)
+                        <span class="bg-gray-200 px-2 py-1 rounded-full text-gray-700">{{ $genre->name }}</span>
+                    @endforeach
+                </div>
+
+                <!-- Boutons -->
+                <div class="mt-4 flex gap-4">
+                    @if(!empty($film->id))
+                        <a href="{{ route('films.show', $film->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+                            Détails
+                        </a>
+                        <a href="{{ route('films.edit', $film->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
+                            Modifier
+                        </a>
+                    @endif
                 </div>
             </div>
-            @endforeach
         </div>
+        @endforeach
+    @else
+        <p>Aucun film trouvé.</p>
+    @endif
+</div>
+
 
         <!-- Statistics -->
         <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -75,12 +92,6 @@
                 <h3 class="text-sm font-medium text-gray-500">Total des Films</h3>
                 <p class="mt-2 text-3xl font-semibold text-gray-900">{{ $totalFilms }}</p>
             </div>
-            @foreach($ratingStats as $rating => $count)
-            <div class="bg-white p-6 rounded-lg shadow-sm">
-                <h3 class="text-sm font-medium text-gray-500">Films {{ $rating }}</h3>
-                <p class="mt-2 text-3xl font-semibold text-gray-900">{{ $count }}</p>
-            </div>
-            @endforeach
         </div>
     </main>
 </div>
@@ -203,47 +214,5 @@ input[type="text"] + svg {
     background-color: #f3f4f6;
 }
 
-.view-mode-btn.bg-indigo-100 {
-    background-color: #e0e7ff;
-}
-
-.view-mode-btn.text-indigo-600 {
-    color: #4f46e5;
-}
-
-/* Statistiques */
-.grid-cols-4 > div {
-    background-color: #fff;
-    padding: 1.5rem;
-    border-radius: 0.5rem;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-.grid-cols-4 > div h3 {
-    font-size: 0.875rem;
-    color: #6b7280;
-}
-
-.grid-cols-4 > div p {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #1f2937;
-}
-
-/* Effet au survol des cartes de film */
-#movies-container .bg-white:hover {
-    transform: translateY(-5px);
-    transition: transform 0.2s ease;
-}
-
-/* Responsive Design */
-@media (max-width: 767px) {
-    .grid-cols-4 > div {
-        grid-template-columns: 1fr 1fr;
-    }
-
-    #movies-container {
-        grid-template-columns: 1fr;
-    }
-}
 </style>
+

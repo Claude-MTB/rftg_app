@@ -1,26 +1,28 @@
 @extends('layouts.app')
 
 @section('content')
-<h1>Ajouter un film</h1>
+<div class="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow">
+    <h2 class="text-2xl font-bold mb-4">Ajouter un film</h2>
+    <form action="{{ route('films.store') }}" method="POST">
+        @csrf
+        <label class="block">Titre :</label>
+        <input type="text" name="title" required class="border p-2 w-full">
 
-<form action="{{ route('films.store') }}" method="POST">
-    @csrf
+        <label class="block mt-2">Description :</label>
+        <textarea name="description" class="border p-2 w-full"></textarea>
 
-    <label for="titre">Titre :</label>
-    <input type="text" name="titre" id="titre" value="{{ old('titre') }}" required>
-    @error('titre')
-        <div class="text-danger">{{ $message }}</div>
-    @enderror
+        <label class="block mt-2">Année de sortie :</label>
+        <input type="number" name="release_year" required class="border p-2 w-full">
 
-    <label for="description">Description :</label>
-    <textarea name="description" id="description">{{ old('description') }}</textarea>
+        <label class="block mt-2">Durée (minutes) :</label>
+        <input type="number" name="length" class="border p-2 w-full">
 
-    <label for="realisateur">Réalisateur :</label>
-    <input type="text" name="realisateur" id="realisateur" value="{{ old('realisateur') }}" required>
+        <label class="block mt-2">Langue :</label>
+        <input type="text" name="language_id" required class="border p-2 w-full">
 
-    <label for="annee">Année :</label>
-    <input type="number" name="annee" id="annee" value="{{ old('annee') }}" required>
-
-    <button type="submit">Enregistrer</button>
-</form>
+        <button type="submit" class="mt-4 bg-green-500 text-white px-4 py-2 rounded">
+            Ajouter
+        </button>
+    </form>
+</div>
 @endsection
