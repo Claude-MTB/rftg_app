@@ -1,25 +1,32 @@
 <?php
-// app/Http/Controllers/DashboardController.php
-
 namespace App\Http\Controllers;
 
-use App\Models\Film;
+use Exception;
+
 
 class DashboardController extends Controller
 {
     public function index()
     {
-        // Récupérer tous les films depuis la base de données
-        $films = Film::all(); 
-    
-        // Calculer le nombre total de films
-        $totalFilms = $films->count();
-    
-        // Grouper les films par classification et compter
-        $ratingStats = $films->groupBy('rating')->map->count();
-    
-        // Retourner la vue avec les données
-        return view('dashboard', compact('films', 'totalFilms'));
+        $port = env('TOAD_PORT');
+        $serveur = env('TOAD_SERVER');
+        $apiUrl = "http://".$serveur.$port."/toad/film/all";
+       
+        try {
+            $response = file_get_contents($apiUrl);
+       
+            if ($response === false) {
+                throw new Exception("Erreur lors de l'appel de l'API.");
+            }
+       
+            $films = json_decode($response, true);
+           
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception("Erreur de décodage JSON : " . json_last_error_msg());
+            }       
+        return view('dashboard', compact('films'));
+    } catch (Exception $e) {
     }
-    
+}
+
 }
