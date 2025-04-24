@@ -29,7 +29,6 @@ Route::get('/films/{id}', [FilmController::class, 'show'])->name('films.show');
 Route::get('/films/{id}/edit', [FilmController::class, 'edit'])->name('films.edit');
 Route::put('/films/{id}', [FilmController::class, 'update'])->name('films.update');
 
-
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
 Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');

@@ -3,6 +3,7 @@
 @section('content')
 <div class="min-h-screen bg-gray-50">
     <main class="max-w-7xl mx-auto px-4 py-8">
+
         <!-- Dashboard Header -->
         <div class="mb-8">
             <div class="mt-4 flex flex-wrap gap-4 items-center justify-between">
@@ -36,61 +37,83 @@
 
         <!-- Movies Display -->
         <div id="movies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-    @if($films && $films->isNotEmpty())
-        @foreach($films as $film)
-        <div class="bg-white rounded-lg shadow-sm overflow-hidden">
-            <div class="aspect-video bg-gray-100 flex items-center justify-center">
-                @if($film->image) <!-- Vérifie si l'image existe -->
-                    <img src="{{ $film->image }}" alt="Affiche du film {{ $film->title }}" class="w-full h-full object-cover">
-                @else
-                    🎬 <!-- Icône temporaire si aucune image dispo -->
-                @endif
-            </div>
-            <div class="p-4">
-                <h3 class="text-lg font-semibold text-gray-900">{{ $film->title }}</h3>
-                <p class="text-sm text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
-                <div class="mt-2 flex items-center gap-2">
-                    <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">
-                        <label>Classification:</label> {{ $film->rating ?? 'N/A' }}
-                    </span>
-                    <span class="text-gray-600">{{ $film->release_year }}</span>
-                </div>
-                <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length ?? 'Inconnue' }} min</p>
-                <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id ?? 'Non spécifié' }}</p>
+            @if(!empty($films) && is_iterable($films))
+                @foreach($films as $film)
+                    <div class="bg-white rounded-lg shadow-sm overflow-hidden">
+                        <div class="aspect-video bg-gray-100 flex items-center justify-center">
+                            @if(!empty($film->image))
+                                <img src="{{ $film->image }}" alt="Affiche du film {{ $film->title ?? 'Titre inconnu' }}" class="w-full h-full object-cover">
+                            @else
+                                🎬
+                            @endif
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-semibold text-gray-900">{{ $film->title ?? 'Titre inconnu' }}</h3>
+                            <p class="text-sm text-gray-600">{{ $film->description ?? 'Aucune description disponible' }}</p>
+                            <div class="mt-2 flex items-center gap-2">
+                                <span class="px-2 py-1 bg-indigo-100 text-indigo-700 text-sm rounded-full">
+                                    <label>Classification:</label> {{ $film->rating ?? 'N/A' }}
+                                </span>
+                                <span class="text-gray-600">{{ $film->release_year ?? 'Année inconnue' }}</span>
+                            </div>
+                            <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film->length ?? 'Inconnue' }} min</p>
+                            <p class="mt-2 text-gray-600"><strong>Langue :</strong> {{ $film->language_id ?? 'Non spécifié' }}</p>
 
-                <!-- Genres -->
-                <div class="mt-2 text-sm text-gray-600">
-                    <strong>Genres :</strong>
-                    @foreach($film->genres as $genre)
-                        <span class="bg-gray-200 px-2 py-1 rounded-full text-gray-700">{{ $genre->name }}</span>
-                    @endforeach
-                </div>
+                            <!-- Genres -->
+                            <div class="mt-2 text-sm text-gray-600">
+                                <strong>Genres :</strong>
+                                @if(!empty($film->genres) && is_iterable($film->genres))
+                                    @foreach($film->genres as $genre)
+                                        <span class="bg-gray-200 px-2 py-1 rounded-full text-gray-700">{{ $genre->name }}</span>
+                                    @endforeach
+                                @else
+                                    <span class="text-gray-400">Aucun genre</span>
+                                @endif
+                            </div>
 
-                <!-- Boutons -->
-                <div class="mt-4 flex gap-4">
-                    @if(!empty($film->id))
-                        <a href="{{ route('films.show', $film->id) }}" class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
-                            Détails
-                        </a>
-                        <a href="{{ route('films.edit', $film->id) }}" class="px-4 py-2 bg-yellow-500 text-white rounded-lg hover:bg-yellow-600">
-                            Modifier
-                        </a>
-                    @endif
-                </div>
-            </div>
+                            <!-- Boutons -->
+                            <div class="mt-4 flex gap-4">
+                                @php
+                                    $hasId = !empty($film->id);
+                                    $detailsLink = $hasId ? route('films.show', $film->id) : '#';
+                                    $editLink = $hasId ? route('films.edit', $film->id) : '#';
+                                @endphp
+
+                                <a href="{{ $detailsLink }}"
+                                   @if(!$hasId) onclick="alert('ID du film manquant.'); event.preventDefault();" @endif
+                                   class="px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg shadow hover:bg-blue-700 transition">
+                                    Détails
+                                </a>
+
+                                <a href="{{ $editLink }}"
+                                   @if(!$hasId) onclick="alert('ID du film manquant.'); event.preventDefault();" @endif
+                                   class="px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:bg-yellow-600 transition">
+                                    Modifier
+                                </a>
+
+                                @if($hasId)
+                                    <form action="{{ route('films.destroy', $film->id) }}" method="POST" onsubmit="return confirm('Es-tu sûr de vouloir supprimer ce film ?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="px-4 py-2 bg-red-500 text-white text-sm font-medium rounded-lg hover:bg-red-600 transition">
+                                            Supprimer
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            @else
+                <p>Aucun film trouvé.</p>
+            @endif
         </div>
-        @endforeach
-    @else
-        <p>Aucun film trouvé.</p>
-    @endif
-</div>
-
 
         <!-- Statistics -->
         <div class="mt-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <div class="bg-white p-6 rounded-lg shadow-sm">
                 <h3 class="text-sm font-medium text-gray-500">Total des Films</h3>
-                <p class="mt-2 text-3xl font-semibold text-gray-900">{{ $totalFilms }}</p>
+                <p class="mt-2 text-3xl font-semibold text-gray-900">{{ $films ? count($films) : 0 }}</p>
             </div>
         </div>
     </main>
@@ -101,7 +124,7 @@
 function setViewMode(mode) {
     const container = document.getElementById('movies-container');
     const buttons = document.querySelectorAll('.view-mode-btn');
-    
+
     buttons.forEach(btn => {
         btn.classList.toggle('bg-indigo-100', btn.dataset.mode === mode);
         btn.classList.toggle('text-indigo-600', btn.dataset.mode === mode);
