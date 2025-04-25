@@ -49,14 +49,15 @@
                     <p class="mt-2 text-gray-600"><strong>Durée :</strong> {{ $film['length'] }} minutes</p>
                     <p class="mt-2 text-gray-600"><strong>Thème :</strong> {{ $film['specialFeatures'] }}</p>
                 </div>
+                @method('UPDATE')
+                <button type="submit" class="px-4 py-2 bg-red-300 text-white rounded-lg hover:bg-red-500">
+                    Modifier
+                </button>
                 @method('DELETE')
                 <button type="submit" class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600">
                     Supprimer
                 </button>
                 @endforeach
-                <a href="{{ route('films.edit', $film['filmId']) }}"
-                class="inline-block mt-2 text-sm text-blue-600 hover:underline">
-                Modifier
                 </a>
 
         </div>

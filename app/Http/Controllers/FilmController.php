@@ -85,7 +85,7 @@ class FilmController extends Controller
     
         $port = env('TOAD_PORT');
         $serveur = env('TOAD_SERVER');
-        $apiUrl = "http://{$serveur}{$port}/toad/film/update/{$id}";
+        $apiUrl = "http://".$serveur.$port."/toad/film/update/{$id}";
     
         $filmData = json_encode($request->all());
     
@@ -111,7 +111,7 @@ class FilmController extends Controller
 {
     $port = env('TOAD_PORT');
     $serveur = env('TOAD_SERVER');
-    $apiUrl = "http://{$serveur}{$port}/toad/film/delete/{$id}";
+    $apiUrl = "http://".$serveur.$port."/toad/film/delete/{$id}";
 
     $options = [
         'http' => [

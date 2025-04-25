@@ -28,5 +28,4 @@ class DashboardController extends Controller
     } catch (Exception $e) {
     }
 }
-
 }
