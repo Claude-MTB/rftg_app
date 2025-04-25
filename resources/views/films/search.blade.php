@@ -12,18 +12,6 @@ extends('layouts.app')
             </div>
             
             <div class="col-md-4">
-                <label>Genre</label>
-                <select name="genre" class="form-control">
-                    <option value="">Tous les genres</option>
-                    @foreach($genres as $genre)
-                        <option value="{{ $genre }}" {{ request('genre') == $genre ? 'selected' : '' }}>
-                            {{ $genre }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-            
-            <div class="col-md-4">
                 <label>Note Minimale</label>
                 <input type="number" name="note_min" class="form-control" min="0" max="10" value="{{ request('note_min') }}">
             </div>
@@ -60,12 +48,12 @@ extends('layouts.app')
                 <tbody>
                     @foreach($films as $film)
                     <tr>
-                        <td>{{ $film->titre }}</td>
-                        <td>{{ $film->genre }}</td>
-                        <td>{{ $film->note }}/10</td>
+                        <td>{{ $film['titre'] }}</td>
+                        <td>{{ $film['genre'] }}</td>
+                        <td>{{ $film['note'] }}/10</td>
                         <td>{{ $film->date_sortie->format('d/m/Y') }}</td>
                         <td>
-                            <a href="{{ route('films.show', $film) }}" class="btn btn-sm btn-info">Détails</a>
+                            <a href="{{ route('dashboard', $film) }}" class="btn btn-sm btn-info">Détails</a>
                         </td>
                     </tr>
                     @endforeach

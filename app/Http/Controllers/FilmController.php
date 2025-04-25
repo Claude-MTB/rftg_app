@@ -44,19 +44,22 @@ class FilmController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required',
-            'description' => 'nullable',
-            'release_year' => 'required|integer',
-            'length' => 'nullable|integer',
-            'language_id' => 'required',
-        ]);
+{
+    $request->validate([
+        'title' => 'required',
+        'description' => 'nullable|string',
+        'release_year' => 'required|integer',
+        'length' => 'nullable|integer',
+        'language_id' => 'required|string',
+        'special_features' => 'nullable|string',
+        'genre' => 'nullable|string',
+    ]);
 
-        Film::create($request->all());
+    Film::create($request->all());
 
-        return redirect()->route('films.index')->with('success', 'Film ajouté avec succès.');
-    }
+    return redirect()->route('films.index')->with('success', 'Film ajouté avec succès.');
+}
+
 
     public function show(Film $film)
     {
@@ -68,25 +71,62 @@ class FilmController extends Controller
         return view('films.edit', compact('film'));
     }
 
-    public function update(Request $request, Film $film)
+    public function update(Request $request, $id)
     {
         $request->validate([
             'title' => 'required',
-            'description' => 'nullable',
+            'description' => 'nullable|string',
             'release_year' => 'required|integer',
             'length' => 'nullable|integer',
-            'language_id' => 'required',
+            'language_id' => 'required|string',
+            'special_features' => 'nullable|string',
+            'genre' => 'nullable|string',
         ]);
-
-        $film->update($request->all());
-
+    
+        $port = env('TOAD_PORT');
+        $serveur = env('TOAD_SERVER');
+        $apiUrl = "http://{$serveur}{$port}/toad/film/update/{$id}";
+    
+        $filmData = json_encode($request->all());
+    
+        $options = [
+            'http' => [
+                'header'  => "Content-Type: application/json\r\n",
+                'method'  => 'PUT',
+                'content' => $filmData,
+            ],
+        ];
+    
+        $context = stream_context_create($options);
+        $result = file_get_contents($apiUrl, false, $context);
+    
+        if ($result === false) {
+            return back()->with('error', 'Erreur lors de la mise à jour du film.');
+        }
+    
         return redirect()->route('films.index')->with('success', 'Film mis à jour avec succès.');
     }
 
-    public function destroy(Film $film)
-    {
-        $film->delete();
+    public function destroy($id)
+{
+    $port = env('TOAD_PORT');
+    $serveur = env('TOAD_SERVER');
+    $apiUrl = "http://{$serveur}{$port}/toad/film/delete/{$id}";
 
-        return redirect()->route('films.index')->with('success', 'Film supprimé avec succès.');
+    $options = [
+        'http' => [
+            'method' => 'DELETE',
+        ],
+    ];
+
+    $context = stream_context_create($options);
+    $result = file_get_contents($apiUrl, false, $context);
+
+    if ($result === false) {
+        return back()->with('error', 'Erreur lors de la suppression du film.');
     }
+
+    return redirect()->route('films.index')->with('success', 'Film supprimé avec succès.');
+}
+
 }

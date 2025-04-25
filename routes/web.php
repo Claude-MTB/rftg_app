@@ -25,9 +25,10 @@ Route::get('/navigation', function () {
 
 Route::resource('films', FilmController::class);
 Route::get('/films', [FilmController::class, 'index'])->name('films.index');
+Route::get('/films/create', [FilmController::class, 'create'])->name('films.create');
 Route::get('/films/{id}', [FilmController::class, 'show'])->name('films.show');
 Route::get('/films/{id}/edit', [FilmController::class, 'edit'])->name('films.edit');
-Route::put('/films/{id}', [FilmController::class, 'update'])->name('films.update');
+Route::put('/films/{id}/update', [FilmController::class, 'update'])->name('films.update');
 
 Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
 Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');

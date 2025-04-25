@@ -32,6 +32,12 @@
             </div>
         </div>
 
+        <!-- Create Movie Button -->
+        <a href="{{ route('films.create') }}"
+        class="inline-block px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition">
+        + Ajouter un film
+        </a>
+
         <!-- Movies Display -->
         <div id="movies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @foreach($films as $film)
@@ -48,6 +54,11 @@
                     Supprimer
                 </button>
                 @endforeach
+                <a href="{{ route('films.edit', $film['filmId']) }}"
+                class="inline-block mt-2 text-sm text-blue-600 hover:underline">
+                Modifier
+                </a>
+
         </div>
     </main>
 </div>
