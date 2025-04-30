@@ -21,7 +21,6 @@ class LoginStaffController extends Controller{
         $apiUrl = "http://".$serveur.$port."/toad/staff/getByEmail?email=" . urlencode($email);
     
         try {
-            // Utilisation de Guzzle pour faire la requête GET
             $response = $client->request('GET', $apiUrl);
     
             // On décode la réponse JSON

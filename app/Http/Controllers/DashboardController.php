@@ -3,7 +3,6 @@ namespace App\Http\Controllers;
 
 use Exception;
 
-
 class DashboardController extends Controller
 {
     public function index()
