@@ -7,20 +7,23 @@
 
     <title>{{ config('app.name', 'RFTG - Location de DVD') }}</title>
 
+    <!-- Fonts -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
 
+    <!-- Styles -->
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
 
+    <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-50">
+</head>
+<body class="font-sans antialiased bg-gray-100">
+    <div class="min-h-screen">
         @include('layouts.navigation')
 
         @yield('content')
     </div>
-    
+
     @stack('scripts')
 </body>
 </html>
